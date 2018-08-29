@@ -1,0 +1,40 @@
+{
+  "name": "fem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.{js,jsx,css,scss}\"",
+    "format:check": "prettier -l \"src/**/*.{js,jsx,css,scss}\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrassili/AdoptMe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrassili/AdoptMe/issues"
+  },
+  "homepage": "https://github.com/mrassili/AdoptMe#readme",
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.4.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "parcel-bundler": "^1.9.7",
+    "prettier": "^1.14.2"
+  },
+  "dependencies": {
+    "petfinder-client": "0.0.3",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  }
+}
