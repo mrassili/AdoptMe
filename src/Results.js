@@ -8,13 +8,9 @@ const petfinder = pf({
 });
 
 class Results extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      pets: []
-    };
-  }
+  state = {
+    pets: []
+  };
 
   componentDidMount() {
     petfinder.pet
@@ -62,12 +58,13 @@ class Results extends Component {
           }
           return (
             <Pet
-              key={pet.id}
+              key={pet.id} // key isn't passed to React!! You can't use it inside your Pet component.
               name={pet.name}
               animal={pet.animal}
               breed={breed}
               media={pet.media}
               location={`${pet.contact.city}, ${pet.contact.state}`}
+              id={pet.id}
             />
           );
         })}
