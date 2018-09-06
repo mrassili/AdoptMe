@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import pf from "petfinder-client";
 import Pet from "./Pet";
 
@@ -7,7 +7,7 @@ const petfinder = pf({
   secret: process.env.API_SECRET
 });
 
-class Results extends Component {
+class Results extends React.Component {
   state = {
     pets: []
   };

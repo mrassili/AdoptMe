@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { render } from "react-dom";
 import { Router, Link } from "@reach/router";
 import Results from "./Results";
 import Details from "./Details";
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <div>
