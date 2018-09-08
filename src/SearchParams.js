@@ -1,11 +1,17 @@
 import React from "react";
-import { ANIMALS } from "petfinder-client";
+import pf, { ANIMALS } from "petfinder-client";
+
+const petfinder = pf({
+  key: process.env.API_KEY,
+  secret: process.env.API_SECRET
+});
 
 class SearchParams extends React.Component {
   state = {
     location: "Los Angeles, CA",
     animal: "",
-    breed: ""
+    breed: "",
+    breeds: []
   };
   handleLocationChange = event => {
     // when you change the location in the input
@@ -20,8 +26,35 @@ class SearchParams extends React.Component {
     });
   };
   handleAnimalChange = event => {
+    this.setState(
+      {
+        animal: event.target.value,
+        breed: ""
+      },
+      this.getBreeds
+    );
+  };
+  getBreeds() {
+    if (this.state.animal) {
+      petfinder.breed.list({ animal: this.state.animal }).then(data => {
+        if (
+          data.petfinder &&
+          data.petfinder.breeds &&
+          Array.isArray(data.petfinder.breeds.breed)
+        ) {
+          this.setState({ breeds: data.petfinder.breeds.breed });
+        } else {
+          this.setState({ breeds: [] });
+        }
+      });
+    } else {
+      // no animal selected
+      this.setState({ breeds: [] });
+    }
+  }
+  handleBreedChange = event => {
     this.setState({
-      animal: event.target.value
+      breed: event.target.value
     });
   };
   render() {
@@ -52,6 +85,24 @@ class SearchParams extends React.Component {
             ))}
           </select>
         </label>
+        <label htmlFor="breed">
+          Breed
+          <select
+            id="breed"
+            value={this.state.breed}
+            onChange={this.handleBreedChange}
+            onBlur={this.handleBreedChange}
+            disabled={!this.state.breeds.length}
+          >
+            <option />
+            {this.state.breeds.map(breed => (
+              <option key={breed} value={breed}>
+                {breed}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button>Submit</button>
       </div>
     );
   }
