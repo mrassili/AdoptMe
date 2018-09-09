@@ -16,7 +16,7 @@ class Results extends React.Component {
     petfinder.pet
       .find({
         output: "full",
-        location: "Los Angelos, CA"
+        location: this.props.sharedState.location
       })
       .then(data => {
         let pets = [];

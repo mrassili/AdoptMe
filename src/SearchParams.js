@@ -1,71 +1,16 @@
 import React from "react";
-import pf, { ANIMALS } from "petfinder-client";
-
-const petfinder = pf({
-  key: process.env.API_KEY,
-  secret: process.env.API_SECRET
-});
+import { ANIMALS } from "petfinder-client";
 
 class SearchParams extends React.Component {
-  state = {
-    location: "Los Angeles, CA",
-    animal: "",
-    breed: "",
-    breeds: []
-  };
-  handleLocationChange = event => {
-    // when you change the location in the input
-    // a Change event is fired and this event bubbles all the way up
-    // to the root div which is listening to changes for us
-    // when that happens, React detects a change and re-renders
-    // the input value is thus reset to state.location default value
-    // hence the "inability" to type in the input
-    // solution is to two-way bind the state to the input like so :
-    this.setState({
-      location: event.target.value
-    });
-  };
-  handleAnimalChange = event => {
-    this.setState(
-      {
-        animal: event.target.value,
-        breed: ""
-      },
-      this.getBreeds
-    );
-  };
-  getBreeds() {
-    if (this.state.animal) {
-      petfinder.breed.list({ animal: this.state.animal }).then(data => {
-        if (
-          data.petfinder &&
-          data.petfinder.breeds &&
-          Array.isArray(data.petfinder.breeds.breed)
-        ) {
-          this.setState({ breeds: data.petfinder.breeds.breed });
-        } else {
-          this.setState({ breeds: [] });
-        }
-      });
-    } else {
-      // no animal selected
-      this.setState({ breeds: [] });
-    }
-  }
-  handleBreedChange = event => {
-    this.setState({
-      breed: event.target.value
-    });
-  };
   render() {
     return (
       <div className="search-params">
         <label htmlFor="location">
           Location
           <input
-            onChange={this.handleLocationChange}
+            onChange={this.props.handleLocationChange}
             id="location"
-            value={this.state.location}
+            value={this.props.sharedState.location}
             placeholder="Location"
           />
         </label>
@@ -73,9 +18,9 @@ class SearchParams extends React.Component {
           Animal
           <select
             id="animal"
-            value={this.state.animal}
-            onChange={this.handleAnimalChange}
-            onBlur={this.handleAnimalChange}
+            value={this.props.sharedState.animal}
+            onChange={this.props.handleAnimalChange}
+            onBlur={this.props.handleAnimalChange}
           >
             <option />
             {ANIMALS.map(animal => (
@@ -89,13 +34,13 @@ class SearchParams extends React.Component {
           Breed
           <select
             id="breed"
-            value={this.state.breed}
-            onChange={this.handleBreedChange}
-            onBlur={this.handleBreedChange}
-            disabled={!this.state.breeds.length}
+            value={this.props.sharedState.breed}
+            onChange={this.props.handleBreedChange}
+            onBlur={this.props.handleBreedChange}
+            disabled={!this.props.sharedState.breeds.length}
           >
             <option />
-            {this.state.breeds.map(breed => (
+            {this.props.sharedState.breeds.map(breed => (
               <option key={breed} value={breed}>
                 {breed}
               </option>
