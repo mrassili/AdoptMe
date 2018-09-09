@@ -20,7 +20,7 @@ class App extends React.Component {
       location: "Los Angeles, CA",
       animal: "",
       breed: "",
-      breeds: "",
+      breeds: [],
       handleAnimalChange: this.handleAnimalChange,
       handleBreedChange: this.handleBreedChange,
       handleLocationChange: this.handleLocationChange,
