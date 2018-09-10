@@ -1,6 +1,8 @@
 import React from "react";
 import pf from "petfinder-client";
 import Pet from "./Pet";
+import { SearchConsumer } from "./SearchContext";
+import SearchBox from "./SearchBox";
 
 const petfinder = pf({
   key: process.env.API_KEY,
@@ -13,10 +15,15 @@ class Results extends React.Component {
   };
 
   componentDidMount() {
+    this.search();
+  }
+  search = () => {
     petfinder.pet
       .find({
         output: "full",
-        location: "Los Angelos, CA"
+        location: this.props.searchParams.location,
+        animal: this.props.searchParams.animal,
+        breed: this.props.searchParams.breed
       })
       .then(data => {
         let pets = [];
@@ -40,11 +47,12 @@ class Results extends React.Component {
           pets
         });
       });
-  }
+  };
 
   render() {
     return (
       <div className="search">
+        <SearchBox search={this.search} />
         {this.state.pets.map(pet => {
           let breed = "";
           // check if pet has more than one breed
@@ -73,4 +81,17 @@ class Results extends React.Component {
   }
 }
 
-export default Results;
+export default function ResultsWithContext(props) {
+  return (
+    <SearchConsumer>
+      {/*
+    Create a new component which pass the context along to Results.
+    Results, therefore, can use context in its implementation above.
+    {...props} is the `path` prop and specific Router props 
+    which was passed by App to Results
+    Intercept it and pass it along with context to Results
+    */}
+      {context => <Results {...props} searchParams={context} />}
+    </SearchConsumer>
+  );
+}
