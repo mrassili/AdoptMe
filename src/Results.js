@@ -90,6 +90,10 @@ export default function ResultsWithContext(props) {
     {...props} is the `path` prop and specific Router props 
     which was passed by App to Results
     Intercept it and pass it along with context to Results
+
+    Normally we would use the consumer inside the render method,
+    but in this case we need to reference context inside lifecycle hooks
+    hence the use of a new component (namely ResultsWithContext).
     */}
       {context => <Results {...props} searchParams={context} />}
     </SearchConsumer>

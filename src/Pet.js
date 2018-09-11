@@ -8,10 +8,12 @@ class Pet extends React.Component {
     if (media && media.photos && media.photos.photo) {
       photos = media.photos.photo.filter(photo => photo["@size"] === "pn");
     }
+    // handle missing photos from the API, use a placeholder
+    const hero = photos[0] ? photos[0].value : "http://placecorgi.com/300/300";
     return (
       <Link to={`/details/${id}`} className="pet">
         <div className="image-container">
-          <img src={photos[0].value} alt={animal} />
+          <img src={hero} alt={animal} />
         </div>
         <div className="info">
           <h1>{name}</h1>

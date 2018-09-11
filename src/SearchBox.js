@@ -5,6 +5,12 @@ import { SearchConsumer } from "./SearchContext";
 class SearchBox extends React.Component {
   handleFormSubmit = event => {
     event.preventDefault();
+    /* When coming from SearchParams the only handler
+    that SearchBox is handed is navigate('/')
+    but still a search is performed and the results 
+    are shown immediately upon redirection to Results component >> ('/')
+    How?
+    */
     this.props.search();
   };
   render() {
