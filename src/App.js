@@ -76,6 +76,11 @@ class App extends React.Component {
       <div>
         <header>
           <Link to="/">AdoptMe</Link>
+          <Link to="/search-params">
+            <span aria-label="search" role="img">
+              🔍
+            </span>
+          </Link>
         </header>
         {/* 
         Depending on the route i.e. / or /details/:id

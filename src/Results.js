@@ -15,6 +15,19 @@ class Results extends React.Component {
   };
 
   componentDidMount() {
+    // console.log(`Results mount with ${this.state.pets.length} pets`);
+    /*
+  As soon as a user changes the location, animal or breed on the form (at search-params route)
+  the event handlers (handleLocationChange,...) are fired calling setState.
+  the App's state changes to meet the search parameters specified by the user
+  that state is then passed as context to ResultsWithContext then to Results
+  In the root path ('/'), componentDidMount fires and this.search() is called
+  which uses the context (searchParams) to search for pets and assign the resulting
+  array of pets to Results' state. this.search() itself calls setState which results
+  in 2 renders but the intermediate state (where pets are not the ones that meet searchParams)
+  doesn't show up to users and only when the setState is complete that the render is visually done.
+  *We would have called this.search() in the constructor but it's absurd to call setState there*
+  */
     this.search();
   }
   search = () => {
@@ -42,10 +55,20 @@ class Results extends React.Component {
           }
         }
 
-        this.setState({
-          // ES6 object literal shorthand
-          pets
-        });
+        this.setState(
+          {
+            // ES6 object literal shorthand
+            pets
+          }
+          /* the arrow function is IMPORTANT here
+          () =>
+            console.log(
+              `Search complete and state updated with ${
+                this.state.pets.length
+              } pets`
+            )
+          */
+        );
       });
   };
 

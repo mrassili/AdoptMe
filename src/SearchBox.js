@@ -9,7 +9,7 @@ class SearchBox extends React.Component {
     that SearchBox is handed is navigate('/')
     but still a search is performed and the results 
     are shown immediately upon redirection to Results component >> ('/')
-    How?
+    How is this possible?
     */
     this.props.search();
   };
