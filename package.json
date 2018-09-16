@@ -7,9 +7,8 @@
     "format": "prettier --write \"src/**/*.{js,jsx,css,scss}\"",
     "format:check": "prettier -l \"src/**/*.{js,jsx,css,scss}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel src/index.html",
     "test": "jest",
+    "dev": "parcel src/index.html",
     "test:update": "jest -u",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
@@ -44,8 +43,10 @@
   },
   "dependencies": {
     "@reach/router": "^1.1.1",
+    "emotion": "^9.2.9",
     "petfinder-client": "0.0.3",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "react-emotion": "^9.2.9"
   }
 }
