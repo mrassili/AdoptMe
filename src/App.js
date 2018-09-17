@@ -1,16 +1,40 @@
 import React from "react";
 import { render } from "react-dom";
 import { Router } from "@reach/router";
-import Results from "./Results";
-import Details from "./Details";
 import NavBar from "./NavBar";
-import SearchParams from "./SearchParams";
 import pf from "petfinder-client";
+import Loadable from "react-loadable";
 import { SearchProvider } from "./SearchContext";
 
 const petfinder = pf({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET
+});
+
+// react-loadable takes the hustle of fulfilling import promises for you
+// all you need to do is replace Details component with the new LoadableDetails
+const LoadableDetails = Loadable({
+  // import() returns a promise
+  loader: () => import("./Details"),
+  loading() {
+    return <h1>Loading split out code</h1>;
+  }
+});
+
+const LoadableResults = Loadable({
+  // import() returns a promise
+  loader: () => import("./Results"),
+  loading() {
+    return <h1>Loading split out code</h1>;
+  }
+});
+
+const LoadableSearchParams = Loadable({
+  // import() returns a promise
+  loader: () => import("./SearchParams"),
+  loading() {
+    return <h1>Loading split out code</h1>;
+  }
 });
 
 class App extends React.Component {
@@ -83,9 +107,9 @@ class App extends React.Component {
         <SearchProvider value={this.state}>
           {/* Anything under SearchProvider will have access to this.state and can update it */}
           <Router>
-            <Results path="/" />
-            <Details path="/details/:id" />
-            <SearchParams path="/search-params" />
+            <LoadableResults path="/" />
+            <LoadableDetails path="/details/:id" />
+            <LoadableSearchParams path="/search-params" />
           </Router>
         </SearchProvider>
       </div>
