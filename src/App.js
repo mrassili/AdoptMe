@@ -5,11 +5,14 @@ import NavBar from "./NavBar";
 import pf from "petfinder-client";
 import Loadable from "react-loadable";
 import { SearchProvider } from "./SearchContext";
+import configureStore from "./configureStore";
 
 const petfinder = pf({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET
 });
+
+const store = configureStore();
 
 // react-loadable takes the hustle of fulfilling import promises for you
 // all you need to do is replace Details component with the new LoadableDetails
