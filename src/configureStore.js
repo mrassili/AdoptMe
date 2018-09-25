@@ -1,22 +1,20 @@
 import { applyMiddleware, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
 import rootReducer from "./reducers"; /* eslint-disable-line */
-import { composeWithDevtools } from "redux-devtools-extension";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-const configureStore = preloadedState => {
+export default function configureStore(preloadedState) {
   const middlewares = [thunkMiddleware];
   const middlewareEnhancer = applyMiddleware(
     ...middlewares
-  ); /* the enhancer is what we actually pass to createStore */
+  ); /* the enhancer (applyMiddleware) is what we actually pass to createStore */
 
   const enhancers = [middlewareEnhancer];
-  const composedEnhancers = composeWithDevtools(
+  const composedEnhancers = composeWithDevTools(
     ...enhancers
   ); /* You can only pass one enhancer to createStore */
 
   const store = createStore(rootReducer, preloadedState, composedEnhancers);
 
   return store;
-};
-
-export default configureStore;
+}

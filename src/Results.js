@@ -1,19 +1,10 @@
 import React from "react";
-import pf from "petfinder-client";
 import Pet from "./Pet";
-import { SearchConsumer } from "./SearchContext";
 import SearchBox from "./SearchBox";
-
-const petfinder = pf({
-  key: process.env.API_KEY,
-  secret: process.env.API_SECRET
-});
+import { connect } from "react-redux";
+import getPets from "./actionCreators/getPets";
 
 class Results extends React.Component {
-  state = {
-    pets: []
-  };
-
   componentDidMount() {
     // console.log(`Results mount with ${this.state.pets.length} pets`);
     /*
@@ -28,55 +19,14 @@ class Results extends React.Component {
   doesn't show up to users and only when the setState is complete that the render is visually done.
   *We would have called this.search() in the constructor but it's absurd to call setState there*
   */
-    this.search();
+    this.props.search();
   }
-  search = () => {
-    petfinder.pet
-      .find({
-        output: "full",
-        location: this.props.searchParams.location,
-        animal: this.props.searchParams.animal,
-        breed: this.props.searchParams.breed
-      })
-      .then(data => {
-        let pets = [];
-
-        if (data.petfinder.pets && data.petfinder.pets.pet) {
-          // at least one pet is found
-          if (Array.isArray(data.petfinder.pets.pet)) {
-            // more than 1 pet : array
-            // assign that array to pets
-            pets = data.petfinder.pets.pet;
-          } else {
-            // only one pet : object
-            // wrap it in an array
-            // assign the array to pets
-            pets = [data.petfinder.pets.pet];
-          }
-        }
-
-        this.setState(
-          {
-            // ES6 object literal shorthand
-            pets
-          }
-          /* the arrow function is IMPORTANT here
-          () =>
-            console.log(
-              `Search complete and state updated with ${
-                this.state.pets.length
-              } pets`
-            )
-          */
-        );
-      });
-  };
 
   render() {
     return (
       <div className="search">
-        <SearchBox search={this.search} />
-        {this.state.pets.map(pet => {
+        <SearchBox search={this.props.search} />
+        {this.props.pets.map(pet => {
           let breed = "";
           // check if pet has more than one breed
           if (Array.isArray(pet.breeds.breed)) {
@@ -104,21 +54,26 @@ class Results extends React.Component {
   }
 }
 
-export default function ResultsWithContext(props) {
-  return (
-    <SearchConsumer>
-      {/*
-    Create a new component which pass the context along to Results.
-    Results, therefore, can use context in its implementation above.
-    {...props} is the `path` prop and specific Router props 
-    which was passed by App to Results
-    Intercept it and pass it along with context to Results
+const mapStateToProps = ({ location, animal, breed, pets }) => ({
+  /*
+  instead of passing state, we can pass 
+  only the state slice concerned which is { location } (object destructuring).
+  so when the mapStateToProps receives the full state object
+  it only retrieve location from it
+  */
+  location,
+  animal,
+  breed,
+  pets
+});
 
-    Normally we would use the consumer inside the render method,
-    but in this case we need to reference context inside lifecycle hooks
-    hence the use of a new component (namely ResultsWithContext).
-    */}
-      {context => <Results {...props} searchParams={context} />}
-    </SearchConsumer>
-  );
-}
+const mapDispatchToProps = dispatch => ({
+  search() {
+    dispatch(getPets());
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Results);

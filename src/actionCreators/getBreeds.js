@@ -1,4 +1,9 @@
-import petfinder from "petfinder-client";
+import pf from "petfinder-client";
+
+const petfinder = pf({
+  key: process.env.API_KEY,
+  secret: process.env.API_SECRET
+});
 
 export default function getBreedsThunk() {
   // A thunk is function that returns a function
@@ -7,6 +12,8 @@ export default function getBreedsThunk() {
   return function getBreeds(dispatch, getState) {
     const { animal } = getState();
 
+    // Note: This is NOT the search function,
+    // this is only responsible for populating the select element
     if (animal) {
       petfinder.breed.list({ animal }).then(data => {
         if (
