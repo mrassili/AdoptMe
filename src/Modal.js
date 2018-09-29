@@ -1,8 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
-const modalRoot = document.getElementById("modal");
-
 class Modal extends React.Component {
   /*
     This Modal component is just an *abstraction* around the portal API for every actual modal dialog
@@ -14,15 +12,19 @@ class Modal extends React.Component {
 
     // create a div that we'll render the modal into
     // which will then be mounted into modalRoot
-    this.el = document.createElement("div");
   }
 
   componentDidMount() {
-    modalRoot.appendChild(this.el);
+    // anything that is browser dependent (document.*) should live in lifecycle hooks
+    // so that we don't crash Node
+    // Remember : markup is first sent from server to the page, then handlers are attached using `hydrate`
+    this.modalRoot = document.getElementById("modal");
+    this.modalRoot.appendChild(this.el);
+    this.el = document.createElement("div");
   }
 
   componentWillUnmount() {
-    modalRoot.removeChild(this.el);
+    this.modalRoot.removeChild(this.el);
   }
 
   render() {

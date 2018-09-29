@@ -11,7 +11,9 @@
     "dev": "parcel src/index.html",
     "test:update": "jest -u",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "build": "parcel build --public-url ./dist/ src/index.html",
+    "start": "npm run build && babel-node server.js"
   },
   "repository": {
     "type": "git",
@@ -25,8 +27,10 @@
   },
   "homepage": "https://github.com/mrassili/AdoptMe#readme",
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
+    "babel-plugin-dynamic-import-node": "^2.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
@@ -44,7 +48,9 @@
   },
   "dependencies": {
     "@reach/router": "^1.1.1",
+    "babel-cli": "^6.26.0",
     "emotion": "^9.2.9",
+    "express": "^4.16.3",
     "petfinder-client": "0.0.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
